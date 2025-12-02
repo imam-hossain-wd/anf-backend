@@ -2,8 +2,8 @@
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { IUser } from './user.interface';
-import { generateRamdonUserId } from '../../../shared/generateRamdomId';
 import User from './user.model';
+import { IDGenerator } from '../../../shared/generateRamdomId';
 
 
 
@@ -21,10 +21,6 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
   if (isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User is already exits');
   }
-
-  const userId = generateRamdonUserId();
-  //@ts-ignore
-  user.user_id = userId;
   const createdUser = await User.create(user);
   console.log(createdUser, 'createdUser successsfully----')
   return createdUser;

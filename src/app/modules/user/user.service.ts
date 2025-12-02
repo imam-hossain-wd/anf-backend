@@ -88,40 +88,48 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
 // };
 // };
 
-// const getSingleUser = async (id: string): Promise<IUser | null> => {
-//   const isexits = await User.findOne({ _id: id });
-//   if (!isexits) {
-//     throw new ApiError(httpStatus.NOT_FOUND, 'user is not found');
-//   }
-//   const singleUser = await User.findOne({ _id: id });
-//   return singleUser;
-// };
 
-// const updateUser = async (
-//   id: string,
-//   payload: Partial<IUser>
-// ): Promise<IUser | null> => {
-//   const isExist = await User.findOne({ _id: id });
+const getAllUsers = async (): Promise<IUser[] | null> => {
+  const result = await User.find();
+  return result;
+};
 
-//   if (!isExist) {
-//     throw new ApiError(httpStatus.NOT_FOUND, 'user not found !');
-//   }
 
-//   const result = await User.findOneAndUpdate({ _id: id }, payload, {
-//     new: true,
-//   });
-//   return result;
-// };
 
-// const deleteUser = async (id: string) => {
-//   const result = await User.findByIdAndDelete(id);
-//   return result;
-// };
+const getSingleUser = async (id: string): Promise<IUser | null> => {
+  const isUserExits = await User.findOne({ _id: id });
+  if (!isUserExits) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user is not found');
+  }
+  const singleUser = await User.findOne({ _id: id });
+  return singleUser;
+};
+
+const updateUser = async (
+  id: string,
+  payload: Partial<IUser>
+): Promise<IUser | null> => {
+  const isUserExist = await User.findOne({ _id: id });
+
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'user not found !');
+  }
+
+  const result = await User.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+
+const deleteUser = async (id: string) => {
+  const result = await User.findByIdAndDelete(id);
+  return result;
+};
 
 export const UserService = {
-  createUser
-  // getSingleUser,
-  // getAllUsers,
-  // updateUser,
-  // deleteUser,
+  createUser,
+  getAllUsers,
+  getSingleUser,
+  updateUser,
+  deleteUser,
 };

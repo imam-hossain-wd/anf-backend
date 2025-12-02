@@ -6,6 +6,7 @@ import { RequestHandler } from "express";
 
 import pick from "../../../shared/pick";
 import { userSearchAbleFields } from "./user.constants";
+import { IUser } from "./user.interface";
 
 
 
@@ -35,49 +36,65 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
 //     });
 //   });
 
+const getAllUsers: RequestHandler = catchAsync(async (req, res) => {
+  const result = await UserService.getAllUsers();
+  sendResponse<IUser[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Retrived all users successfully',
+    data: result,
+  });
+  // sendResponse(res, {
+  //   statusCode: httpStatus.OK,
+  //   success: true,
+  //   message: 'Retrived all users successfully',
+  //   data: result
+  // });
+});
 
-// const getSingleUser:RequestHandler = catchAsync(async (req, res) => {
-//     const id = req.params.id;
-//     const result = await UserService.getSingleUser(id);
-//     sendResponse<IUser>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'Retrived single user successfully',
-//       data: result,
-//     });
-//   });
 
-//   const updateUser:RequestHandler = catchAsync(async (req, res) => {
-//     const id = req.params.id;
-//     const updatedData = req.body;
-//     const result = await UserService.updateUser(id, updatedData);
-//     sendResponse<IUser>(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: "update user successfully",
-//       data: result,
-//     });
-// });
+const getSingleUser: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await UserService.getSingleUser(id);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Retrived single user successfully',
+    data: result,
+  });
+});
 
-//   const deleteUser:RequestHandler = catchAsync(async (req, res) => {
-//     const {id} = req.params;
-//     const result = await UserService.deleteUser(id);
-//     sendResponse(res, {
-//       statusCode: httpStatus.OK,
-//       success: true,
-//       message: 'User deleted successfully !',
-//       data: result
-//     });
-//   });
+const updateUser: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+  const result = await UserService.updateUser(id, updatedData);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "update user successfully",
+    data: result,
+  });
+});
+
+const deleteUser: RequestHandler = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await UserService.deleteUser(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User deleted successfully !',
+    data: result
+  });
+});
 
 
 
 
 export const UserController = {
-  createUser
-  // getSingleUser,
-  // getAllUsers,
-  // updateUser,
-  // deleteUser,
+  createUser,
+  getAllUsers,
+  getSingleUser,
+  updateUser,
+  deleteUser,
 
 }

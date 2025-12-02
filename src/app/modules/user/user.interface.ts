@@ -6,6 +6,8 @@ import { UserRole } from "../../../enums/user";
 
 
 export type IUser = {
+    isModified(arg0: string): unknown;
+    isNew: any;
     _id?: mongoose.Types.ObjectId;
     user_id?: string;
     name: string;

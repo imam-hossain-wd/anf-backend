@@ -1,6 +1,8 @@
 import mongoose, { Schema } from 'mongoose';
 import { UserRole } from '../../../enums/user';
 import { IUser } from './user.interface';
+import config from '../../../config';
+import bcrypt from 'bcrypt';
 
 
 
@@ -24,6 +26,19 @@ const UserSchema: Schema = new Schema(
   }
 );
 
+//Pre-Save Hook: password hashing
+UserSchema.pre(
+  'save',
+  async function (this: IUser) {
+    if (this.isModified('password') || this.isNew) {
+      this.password = await bcrypt.hash(
+        this.password,
+        Number(config.bycrypt_salt_rounds)
+      );
+    }
+  }
+);
+
 //check user exit  Static Method
 UserSchema.statics.isUserExist = async function (
   email: string
@@ -33,6 +48,16 @@ UserSchema.statics.isUserExist = async function (
     { _id: 1, password: 1, role: 1, email: 1 }
   );
 };
+
+// check  password match  Static Method
+
+UserSchema.statics.isPasswordMatched = async function (
+  givenPassword: string,
+  savedPassword: string
+): Promise<boolean> {
+  return await bcrypt.compare(givenPassword, savedPassword);
+};
+
 
 const User = mongoose.model<IUser>('User', UserSchema);
 

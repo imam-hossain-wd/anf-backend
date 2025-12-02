@@ -1,9 +1,14 @@
 /* eslint-disable no-unused-vars */
 export enum UserRole {
-  ADMIN ="Admin",
   SUPER_ADMIN= "Super_Admin",
-  donor="donor",
-  VOLENTIAR ="Volentair"
+  ADMIN ="Admin",
+  USER="user",
+  MEMBER="member",
+  DONOR="donor",
+  INSTRUCTOR="instructor",
+  WEBINAR="webinar",
+  VOLUNTEER ="Volunteer",
+
 }
 
 

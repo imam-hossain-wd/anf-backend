@@ -7,8 +7,6 @@ export type IVolunteerAddress = {
 
 export type IVolunteer = {
   _id?: mongoose.Types.ObjectId;
-  user_id?: mongoose.Types.ObjectId;
-  volunteer_id?: string;
   name: string;
   isForeigner: boolean;
   phoneNumber: string;

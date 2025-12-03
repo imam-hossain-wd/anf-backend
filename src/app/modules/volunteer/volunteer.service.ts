@@ -4,8 +4,9 @@ import ApiError from '../../../errors/ApiError';
 import { IVolunteer } from './volunteer.interface';
 import Volunteer from './volunteer.model';
 
+
+// create volunteer
 const createVolunteer = async (volunteer: IVolunteer): Promise<IVolunteer | null> => {
-  // Check if volunteer exists by email
   const isVolunteerExistByEmail = await (Volunteer as any).isVolunteerExistByEmail(volunteer.email);
   if (isVolunteerExistByEmail) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Volunteer with this email already exists');
@@ -17,25 +18,28 @@ const createVolunteer = async (volunteer: IVolunteer): Promise<IVolunteer | null
     throw new ApiError(httpStatus.BAD_REQUEST, 'Volunteer with this phone number already exists');
   }
 
+
   // Check if NID already exists
   const isNidExist = await (Volunteer as any).isNidExist(volunteer.nidNumber);
   if (isNidExist) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Volunteer with this NID number already exists');
   }
 
+  console.log("volunteer", volunteer)
+
   const createdVolunteer = await Volunteer.create(volunteer);
   return createdVolunteer;
 };
 
+
+// get all volunteers
 const getAllVolunteers = async (): Promise<IVolunteer[] | null> => {
   const result = await Volunteer.find()
-    .populate('user_id', 'name email phone_number')
-    .populate('createdBy', 'name email')
-    .populate('permanentAddress.districtId', 'name')
-    .populate('presentAddress.districtId', 'name')
-    .populate('documents', 'url title');
+    console.log(result, 'result all vilunteer')
   return result;
 };
+
+// get single volunteer
 
 const getSingleVolunteer = async (id: string): Promise<IVolunteer | null> => {
   const isVolunteerExist = await Volunteer.findById(id);
@@ -43,12 +47,7 @@ const getSingleVolunteer = async (id: string): Promise<IVolunteer | null> => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Volunteer not found');
   }
   
-  const singleVolunteer = await Volunteer.findById(id)
-    .populate('user_id', 'name email phone_number')
-    .populate('createdBy', 'name email')
-    .populate('permanentAddress.districtId', 'name')
-    .populate('presentAddress.districtId', 'name')
-    .populate('documents', 'url title');
+  const singleVolunteer = await Volunteer.findById(id);
   return singleVolunteer;
 };
 

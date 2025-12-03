@@ -2,6 +2,8 @@
 import express from 'express';
 import { UserRoutes } from '../modules/user/user.route';
 import { MemberRoutes } from '../modules/member/member.route';
+import { VolunteerRoutes } from '../modules/volunteer/volunteer.route';
+import { InstructorRoutes } from '../modules/instructor/instructor.route';
 
 
 
@@ -15,7 +17,15 @@ const moduleRoutes = [
   {
     path: '/member',
     route: MemberRoutes,
-  }
+  },
+  {
+    path: '/volunteer',
+    route: VolunteerRoutes,
+  },
+  {
+    path: '/instructor',
+    route: InstructorRoutes,
+  },
 
 ];
 
